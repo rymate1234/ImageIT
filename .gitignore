@@ -1,0 +1,4 @@
+/build/
+/images/
+/images.db
+*.pyc

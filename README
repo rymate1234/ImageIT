@@ -1,0 +1,11 @@
+ImageIT is a simple python image uploading site. It uses the flask framework.
+
+Want to roll your own? Just do the following:
+
+1. git clone this repo
+2. Edit config at the top of imageit.py
+3. Open a python interactive shell session
+4. > from imageit import init_db
+   > init_db()
+   > exit
+5. python imageit.py

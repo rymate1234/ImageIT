@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block title %}Viewing image{% endblock title %}
+
+{% block body %}
+{% if error %}
+<div class="ui error message">
+	<div class="header">
+		Looks like something went wrong!
+	</div>
+	{{ error}}
+</div>
+{% endif %}
+{% if image %}
+
+<h1 class="ui header">
+	{{ image.title }} 
+</h1>
+
+<a href="http://images.rymate.co.uk/images/{{ image.file_name }}.{{ image.file_ext }}" class="ui full image">
+	<img src="http://images.rymate.co.uk/images/{{ image.file_name }}.{{ image.file_ext }}">
+</a>
+
+{% endif %}
+{% endblock body %}

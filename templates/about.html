@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %}Viewing image{% endblock title %}
+
+{% block body %}
+ <div class="ui page grid inverted overview segment">
+    <div class="ui two wide column"></div>
+    <div class="twelve wide column">
+      <div class="ui three column center aligned stackable divided grid">
+        <div class="column">
+          <div class="ui icon header">
+            <i class="circular photo link icon"></i>
+            Any Image 
+          </div>
+          <p>Upload almost any image to our servers. As long as it isn't illegal. Images can be up to 25MB in size, and there's no compression, so any text on the image stays readable!</p>
+        </div>
+        <div class="column">
+          <div class="ui icon header">
+            <i class="circular loading link icon"></i>
+            No more of this
+          </div>
+          <p>ImageIT is fast. Upload images as fast as your internet allows. And view them just as fast. A speedy python backend allows the site to perform quickly.</p>
+        </div>
+        <div class="column">
+          <div class="ui icon header">
+            <i class="circular tablet link icon"></i>
+            Any device
+          </div>
+          <p>ImageIT works on almost anything. Whether it's a tablet, phone or a PC, as long as it has a modern browser, it can view this website. </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock body %}

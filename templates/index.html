@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+
+{% block title %}Upload an Image!{% endblock title %}
+
+{% block body %}
+{% if error %}
+<div class="ui error message">
+  <div class="header">
+    Looks like something went wrong!
+  </div>
+  {{ error}}
+</div>
+{% endif %}
+
+    <button type="button" onclick="chooseFile();" id="info_div" style="display: block; width:100%; height:100%; margin: 0 auto; padding: 5px; border: none; background: none;" >
+          <div class="jumbotron">
+          <h1>Welcome to ImageIT!</h1>
+          <p>Using Chrome or Firefox? Just use Ctrl-V to paste most images straight onto ImageIT!</p>
+          <p>Not working? Just click this box, and we&#39;ll let you choose any image on your PC, phone or tablet.</p>
+      </div>
+    </button>
+<div class="ui bottom large active blue progress">
+  <div class="bar" id="bar" ></div>
+</div>
+
+<form action="{{ url_for('index') }}"  style="height:0px;overflow:hidden"  method=post class=add-entry enctype="multipart/form-data">
+  <div class="ui fluid form inverted">
+    <div class="two fields">
+      <div style="height:0px;overflow:hidden">
+        <input type="file" id="fileInput" name="fileInput"/> 
+        <input type="submit" id="submit" name="submit"></input>
+      </div>
+  </div>
+  <br />
+  <div class="ui green submit button" id="submitbtn" onclick="submitForm();">Upload!</input>
+  </div>
+</form>
+
+<script>
+     
+    function chooseFile() {
+        console.log("wat");
+        document.getElementById("fileInput").click();
+    }
+
+    function submitForm() {
+        $("#submit").click();
+        $("#jumbotron").text("Uploading");
+    }
+
+    $("#fileInput").on("change", function() { 
+        submitForm();
+    });
+
+    $("form").submit(function () {
+        var uploader = $("#fileInput")[0];
+
+        if (uploader.files.length == 0) {
+            return;
+        } else {
+            uploadFile(uploader.files[0]);
+        }
+
+        return false;
+    });
+
+    
+ </script>
+
+{% endblock body %}
