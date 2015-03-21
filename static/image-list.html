@@ -1,0 +1,29 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="bower_components/font-roboto/roboto.html">
+<link rel="import" href="bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="bower_components/core-list/core-list.html">
+<link rel="import" href="bower_components/paper-item/paper-item.html">
+
+<polymer-element name="image-list" layout vertical>
+    <template>
+        <link rel="stylesheet" href="image-list.css">
+        <core-list id="list" data="{{ data }}" width="150" grid=true >
+            <template>
+                <core-item class="item" onclick="window.parent.location.href= '/images/{{ model.filename }}';">
+                    <img src="/images/{{ model.filename }}">
+                </core-item>
+            </template>
+        </core-list>
+    </template>
+
+    <script>
+        Polymer('image-list', {
+            ready: function() {
+              this.data = [];
+              this.data = JSON.parse(localStorage.image_list);
+              window.list = this.$.list;
+            }
+        });
+
+    </script>
+</polymer-element>

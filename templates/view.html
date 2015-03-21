@@ -1,25 +1,51 @@
-{% extends "layout.html" %}
+<html>
+<head>
+        <meta name="viewport"
+          content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
-{% block title %}Viewing image{% endblock title %}
+    <script src="{{ url_for('static', filename='bower_components/webcomponentsjs/webcomponents.js') }}">
+    </script>
 
-{% block body %}
-{% if error %}
-<div class="ui error message">
-	<div class="header">
-		Looks like something went wrong!
-	</div>
-	{{ error}}
-</div>
-{% endif %}
-{% if image %}
+    <link rel="import" href="{{ url_for('static', filename='bower_components/font-roboto/roboto.html') }}">
 
-<h1 class="ui header">
-	{{ image.title }} 
-</h1>
+    <link rel="import" href="{{ url_for('static', filename='bower_components/core-media-query/core-media-query.html') }}">
 
-<a href="http://images.rymate.co.uk/images/{{ image.file_name }}.{{ image.file_ext }}" class="ui full image">
-	<img src="http://images.rymate.co.uk/images/{{ image.file_name }}.{{ image.file_ext }}">
+    <style shim-shadowdom>
+        body {
+            font-family: RobotoDraft, 'Helvetica Neue', Helvetica, Arial;
+            font-size: 14px;
+            margin: 0;
+            padding: 24px;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            -webkit-touch-callout: none;
+        }
+
+        img {
+            width: auto;
+            height: auto;
+            display: block;
+            max-height: 100%;
+            max-width: 100%;
+        }
+    </style>
+    <base target="_parent" />
+
+</head>
+<body unresolved>
+
+<a href="/images/{{ image.file_name }}.{{ image.file_ext }}" class="image">
+	<img src="/images/{{ image.file_name }}.{{ image.file_ext }}">
 </a>
 
-{% endif %}
-{% endblock body %}
+  <core-media-query id="mediaQuery" query="max-width: 800px"></core-media-query>
+
+  <script>
+
+    document.querySelector('#mediaQuery').addEventListener('core-media-change',
+      function(e) {
+        document.body.classList.toggle('core-narrow', e.detail.matches);
+      });
+
+  </script>
+</body>
+</html>

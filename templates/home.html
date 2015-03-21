@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <title>ImageIT</title>
+
+    <meta name="viewport"
+          content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="{{ url_for('static', filename='bower_components/webcomponentsjs/webcomponents.js') }}">
+    </script>
+
+    <link rel="import" href="{{ url_for('static', filename='bower_components/font-roboto/roboto.html') }}">
+    <link rel="import" href="{{ url_for('static', filename='bower_components/paper-shadow/paper-shadow.html') }}">
+    <link rel="import" href="{{ url_for('static', filename='bower_components/paper-button/paper-button.html') }}">
+
+    <style shim-shadowdom>
+        body {
+            font-family: RobotoDraft, 'Helvetica Neue', Helvetica, Arial;
+            font-size: 14px;
+            margin: 0;
+            padding: 24px;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            -webkit-touch-callout: none;
+        }
+
+    </style>
+
+    <script src="{{ url_for('static', filename='imageit.js') }}">
+    </script>
+
+</head>
+<body unresolved>
+<div id="jumbotron">
+    <h2 style="margin: 0;">Welcome to ImageIT!</h2>
+
+    <p>Using Chrome, IE11 or Firefox? Just use Ctrl-V in the below box to paste most images straight onto ImageIT!</p>
+
+    <div id="paste" style="height:100px;width: 100%;background-color: #eeeeee; border: 1px dashed;">
+
+    </div>
+
+    <p>Not working? Just click the button, and we'll let you choose any image on your PC, phone or tablet.</p>
+    <paper-button raised id="uploadBtn" class="md-raised md-primary">Choose a file manually</paper-button>
+</div>
+
+<div style="height:0px;display: none;">
+    <form action="/" id="imgUpload" method=post class=add-entry enctype="multipart/form-data">
+        <input type="file" id="fileInput" name="fileInput"/>
+        <input type="submit" id="submit" name="submit"/>
+    </form>
+</div>
+
+
+<core-media-query id="mediaQuery" query="max-width: 800px"></core-media-query>
+
+<script>
+
+    document.querySelector('#mediaQuery').addEventListener('core-media-change',
+            function (e) {
+                document.body.classList.toggle('core-narrow', e.detail.matches);
+            });
+
+    document.getElementById('uploadBtn').addEventListener('click', uploadClicked);
+    document.getElementById('fileInput').addEventListener('change', submitForm);
+    document.getElementById('imgUpload').addEventListener('submit', onSubmit);
+
+    function uploadClicked() {
+        console.log("clicked");
+        input = document.getElementById('fileInput');
+        if (input) {
+            input.click();
+        }
+    }
+
+    function submitForm() {
+        input = document.getElementById('submit');
+        if (input) {
+            input.click();
+        }
+    }
+
+    function onSubmit(e) {
+        console.log("caught it");
+        if (e.preventDefault) e.preventDefault();
+        var uploader = document.getElementById('fileInput');
+
+        if (uploader.files.length == 0) {
+            return false;
+        } else {
+            uploadFile(uploader.files[0]);
+        }
+
+        return false;
+    }
+
+
+    // Minified version of isMobile
+    (function (i) {
+        var e = /iPhone/i, n = /iPod/i, o = /iPad/i, t = /(?=.*\bAndroid\b)(?=.*\bMobile\b)/i, r = /Android/i, d = /BlackBerry/i, s = /Opera Mini/i, a = /IEMobile/i, b = /(?=.*\bFirefox\b)(?=.*\bMobile\b)/i, h = RegExp("(?:Nexus 7|BNTV250|Kindle Fire|Silk|GT-P1000)", "i"), c = function (i, e) {
+            return i.test(e)
+        }, l = function (i) {
+            var l = i || navigator.userAgent;
+            this.apple = {
+                phone: c(e, l),
+                ipod: c(n, l),
+                tablet: c(o, l),
+                device: c(e, l) || c(n, l) || c(o, l)
+            }, this.android = {
+                phone: c(t, l),
+                tablet: !c(t, l) && c(r, l),
+                device: c(t, l) || c(r, l)
+            }, this.other = {
+                blackberry: c(d, l),
+                opera: c(s, l),
+                windows: c(a, l),
+                firefox: c(b, l),
+                device: c(d, l) || c(s, l) || c(a, l) || c(b, l)
+            }, this.seven_inch = c(h, l), this.any = this.apple.device || this.android.device || this.other.device || this.seven_inch
+        }, v = i.isMobile = new l;
+        v.Class = l
+    })(window);
+
+    if (!isMobile.any) {
+        if (!window.Clipboard) {
+            var pasteCatcher = document.getElementById("paste");
+
+            // Firefox allows images to be pasted into contenteditable elements
+            pasteCatcher.setAttribute("contenteditable", "");
+
+            pasteCatcher.setAttribute("onpaste", "handlePaste(this)");
+
+            // as long as we make sure it is always in focus
+            pasteCatcher.focus();
+            document.addEventListener("click", function () {
+                pasteCatcher.focus();
+            });
+        }
+    }
+
+</script>
+
+</body>
+</html>

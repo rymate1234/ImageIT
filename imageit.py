@@ -10,9 +10,9 @@ app = Flask(__name__)
 
 # Load default config and override config from an environment variable
 app.config.update(dict(
-    DATABASE='/home/ryan/ImageIT/images.db',
+    DATABASE='/home/rymate/imageit/images.db',
     DEBUG=True,
-    UPLOAD_FOLDER='/home/ryan/ImageIT/images',
+    UPLOAD_FOLDER='/home/rymate/imageit/images',
     MAX_CONTENT_LENGTH = 50 * 1024 * 1024,
 ))
 
@@ -78,7 +78,7 @@ def index():
                      [file_id, "", file_ext])
                 db.commit()
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                return redirect("/view/" + file_id)
+                return redirect("/images/" + filename)
         else:
             return render_template('index.html', error="It looks like you forgot to choose a file to upload. ")
     else:
@@ -94,9 +94,23 @@ def view_image(id):
 def about():    
     return render_template('about.html') 
 
+@app.route('/home')
+def home():
+    return render_template('home.html')
+
+@app.route('/uploaded')
+def uploaded():
+    return render_template('uploaded.html')
+
 @app.route('/images/<filename>')
 def direct_image(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+@app.route('/get-filename/<id>')
+def image_filename(id):
+    image = query_db('select * from entries where file_name = ?',
+                [id], one=True)
+    return image[1] + "." + image[3]
 
 @app.route('/upload', methods=['POST']) 
 def upload():
@@ -117,7 +131,7 @@ def upload():
             image.write(request.data)
             image.close()
             print "Uploaded as " + os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            return "/view/" + file_id
+            return file_id
         else:
             return "NO FILE"
 

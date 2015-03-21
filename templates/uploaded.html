@@ -1,0 +1,35 @@
+<html>
+<head lang="en">
+
+    <meta name="viewport"
+          content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="{{ url_for('static', filename='bower_components/webcomponentsjs/webcomponents.js') }}">
+    </script>
+
+    <link rel="import" href="{{ url_for('static', filename='bower_components/font-roboto/roboto.html') }}">
+    <link rel="import" href="{{ url_for('static', filename='bower_components/paper-shadow/paper-shadow.html') }}">
+    <link rel="import" href="{{ url_for('static', filename='image-list.html') }}">
+
+    <style>
+        body {
+            font-family: RobotoDraft, 'Helvetica Neue', Helvetica, Arial;
+            font-size: 14px;
+            margin: 0;
+            padding: 24px;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            -webkit-touch-callout: none;
+        }
+
+        image-list {
+            display: block;
+            height: 100%;
+        }
+
+    </style>
+</head>
+<body unresolved>
+<image-list></image-list>
+
+</body>
+</html>

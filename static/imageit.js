@@ -1,49 +1,6 @@
-// Minified version of isMobile 
-        (function(i){var e=/iPhone/i,n=/iPod/i,o=/iPad/i,t=/(?=.*\bAndroid\b)(?=.*\bMobile\b)/i,r=/Android/i,d=/BlackBerry/i,s=/Opera Mini/i,a=/IEMobile/i,b=/(?=.*\bFirefox\b)(?=.*\bMobile\b)/i,h=RegExp("(?:Nexus 7|BNTV250|Kindle Fire|Silk|GT-P1000)","i"),c=function(i,e){return i.test(e)},l=function(i){var l=i||navigator.userAgent;this.apple={phone:c(e,l),ipod:c(n,l),tablet:c(o,l),device:c(e,l)||c(n,l)||c(o,l)},this.android={phone:c(t,l),tablet:!c(t,l)&&c(r,l),device:c(t,l)||c(r,l)},this.other={blackberry:c(d,l),opera:c(s,l),windows:c(a,l),firefox:c(b,l),device:c(d,l)||c(s,l)||c(a,l)||c(b,l)},this.seven_inch=c(h,l),this.any=this.apple.device||this.android.device||this.other.device||this.seven_inch},v=i.isMobile=new l;v.Class=l})(window);
 
-if (!isMobile.any) {
-    if (!window.Clipboard) {
-        var pasteCatcher = document.createElement("div");
-
-        // Firefox allows images to be pasted into contenteditable elements
-        pasteCatcher.setAttribute("contenteditable", "");
-
-        pasteCatcher.setAttribute("onpaste", "handlePaste(this)");
-
-        // We can hide the element and append it to the body,
-        pasteCatcher.style.opacity = 0;
-        document.body.appendChild(pasteCatcher);
-
-        // as long as we make sure it is always in focus
-        pasteCatcher.focus();
-        document.addEventListener("click", function () {
-            pasteCatcher.focus();
-        });
-    }
-} 
 // Add the paste event listener
 window.addEventListener("paste", handlePaste);
-
-
-$(document).ready(function () {
-    $(".progress").hide();
-
-    $('.ui.dropdown')
-        .dropdown({
-            on: 'hover'
-        });
-
-    $('.ui.form')
-        .form(validationRules, {
-            on: 'blur'
-        });
-
-    $('.masthead .information')
-        .transition('scale in');
-
-    setInterval(changeSides, 3000);
-
-});
 
 /* Handle paste events */
 function handlePaste(e) {
@@ -132,22 +89,24 @@ function dataUriToBlob(dataURI) {
 function uploadFile(file) {
     var xhr = new XMLHttpRequest();
   
-    $(".jumbotron").html("<IMG SRC='http://images.rymate.co.uk/images/4jBHzKl.png'></img>");
+    document.getElementById("jumbotron").innerHTML = "<IMG SRC='http://images.rymate.co.uk/images/4jBHzKl.png'></img>";
 
     xhr.upload.onprogress = function (e) {
-        $(".progress").show();
+        //$(".progress").show();
         var percentComplete = Math.ceil((e.loaded / e.total) * 100);
-        $("#info_text").text("Uploaded: " + percentComplete + "%");
-        $('.bar').width(percentComplete + "%");
+        //$("#info_text").text("Uploaded: " + percentComplete + "%");
+        //$('.bar').width(percentComplete + "%");
         console.log("Uploaded: " + percentComplete + "%");
     };
 
     xhr.onload = function () {
         if (xhr.status == 200) {
-            console.log(xhr.response);
-            hostAddress = top.location.host.toString();
-            url = "http://" + hostAddress + xhr.response;
-            window.location = url;
+            if (top.window) {
+                console.log("window is avaliable");
+            }
+            console.log( "Window.location is " + top.window.location);
+            addUploadedImage(xhr.response);
+            top.window.location.hash = xhr.response;
         } else if (xhr.status == 413) {
             alert("The image is too large! It must be 25MB or less.");
         } else {
@@ -162,4 +121,25 @@ function uploadFile(file) {
     xhr.open("POST", "/upload", true);
     xhr.setRequestHeader("Content-Type", file.type);
     xhr.send(file);
+}
+
+function addUploadedImage(imageId) {
+    var xhr = new XMLHttpRequest();
+
+    xhr.onload = function () {
+        if (xhr.status == 200) {
+            if (localStorage.image_list) {
+                image_list = JSON.parse(localStorage.image_list);
+                image_list.push({filename: xhr.response});
+                localStorage.image_list = JSON.stringify(image_list);
+            } else {
+                image_list = [];
+                image_list.push({filename: xhr.response});
+                localStorage.image_list = JSON.stringify(image_list);
+            }
+        }
+    };
+
+    xhr.open("GET", "/get-filename/" + imageId, true);
+    xhr.send();
 }
