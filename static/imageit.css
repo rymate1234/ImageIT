@@ -1,0 +1,22 @@
+* {
+    color: white;
+    background-color: #111;
+    font-family: sans-serif;
+}
+
+button {
+    border: 1px solid #333;
+    background-color: #222;
+    padding: 6px;
+}
+
+#paste {
+    height: 100px;
+    width: 100%;
+    background-color: #222;
+    border: 1px dashed #333;
+}
+
+.pure-g {
+    letter-spacing: 0em !important;
+}
