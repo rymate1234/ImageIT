@@ -82,7 +82,7 @@ def index():
         else:
             return render_template('index.html', error="It looks like you forgot to choose a file to upload. ")
     else:
-        return render_template('index.html')
+        return render_template('home.html')
 
 @app.route('/view/<id>')
 def view_image(id):    
@@ -90,17 +90,6 @@ def view_image(id):
                 [id], one=True) 
     return render_template('view.html', image = image) 
 
-@app.route('/about')
-def about():    
-    return render_template('about.html') 
-
-@app.route('/home')
-def home():
-    return render_template('home.html')
-
-@app.route('/uploaded')
-def uploaded():
-    return render_template('uploaded.html')
 
 @app.route('/images/<filename>')
 def direct_image(filename):

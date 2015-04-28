@@ -106,7 +106,7 @@ function uploadFile(file) {
             }
             console.log( "Window.location is " + top.window.location);
             addUploadedImage(xhr.response);
-            top.window.location.hash = xhr.response;
+            top.window.location.href = "/view/" + xhr.response;
         } else if (xhr.status == 413) {
             alert("The image is too large! It must be 25MB or less.");
         } else {
